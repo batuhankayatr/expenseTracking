@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -24,4 +25,10 @@ public interface TransactionsRepository extends JpaRepository<Transactions, Inte
 
     @Query("SELECT SUM(t.amount) FROM Transactions t WHERE t.user = :user AND t.localDateTime >= :startDate AND t.localDateTime < :endDate")
     BigDecimal getTotalAmountForPeriod(@Param("user") Users user, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+
+    @Query("SELECT SUM(t.amount) FROM Transactions t WHERE t.user.id = :userId AND t.localDateTime BETWEEN :startDate AND :endDate")
+    BigDecimal getTotalExpenseByUserIdAndPeriod(@Param("userId") Long userId, @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+
+    @Query("SELECT t.user.id, SUM(t.amount) FROM Transactions t WHERE t.localDateTime BETWEEN :startDate AND :endDate GROUP BY t.user.id")
+    List<Object[]> getTotalExpenseForAllUsersAndPeriod(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 }

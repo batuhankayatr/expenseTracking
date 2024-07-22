@@ -37,6 +37,9 @@ public class UsersService {
         user.setPassword(userDetails.getPassword());
         return usersRepository.save(user);
     }
+    public Optional<Users> findByUsername(String username) {
+        return usersRepository.findByUsername(username);
+    }
 
     public void deleteUser(Long id) {
         usersRepository.deleteById(id);
