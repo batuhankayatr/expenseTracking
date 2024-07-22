@@ -40,7 +40,7 @@ public class ExpenseAggregationService {
         for (Object[] result : results) {
             Long userId = (Long) result[0];
             BigDecimal totalAmount = (BigDecimal) result[1];
-            // Burada sonuçları kaydedin veya işlemleri gerçekleştirin
+
             System.out.printf("User ID: %d, Total %s Expense: %s%n", userId, period, totalAmount);
         }
     }
