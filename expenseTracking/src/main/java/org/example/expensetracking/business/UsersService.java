@@ -1,8 +1,5 @@
 package org.example.expensetracking.business;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.example.expensetracking.dataAccess.UsersRepository;
 import org.example.expensetracking.entities.Users;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +7,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
 @Service
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class UsersService {
 
-    private UsersRepository usersRepository;
+    private final UsersRepository usersRepository;
+
+    @Autowired
+    public UsersService(UsersRepository usersRepository) {
+        this.usersRepository = usersRepository;
+    }
 
     public Users createUser(Users user) {
         return usersRepository.save(user);
@@ -31,7 +31,7 @@ public class UsersService {
     }
 
     public Users updateUser(Long id, Users userDetails) {
-        Users user = usersRepository.findById(id).orElseThrow();
+        Users user = usersRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
         user.setUsername(userDetails.getUsername());
         user.setEmail(userDetails.getEmail());
         user.setPassword(userDetails.getPassword());
